@@ -1,37 +1,69 @@
 \section{A Concept-Driven Taxonomy}
+\label{sec:taxonomy}
 
-\paragraph{Section thesis.}
-A useful taxonomy should classify methods by modeling goal, representation type, dynamics model, conditioning signal, and evaluation protocol.
+This survey organizes predictive world models by the role their predictions play, rather than by a chronological list of architectures. The key distinction is that generic video generation can be judged mainly by visual plausibility or prompt adherence, whereas a predictive world model should support some form of environment prediction under state history, actions, latent controls, planning objectives, or physical-evaluation criteria. Early action-conditioned video prediction already made future frames depend on agent actions, latent world models used compact predictive states for planning or policy learning, object-centric models exposed entities and relations, DIAMOND used conditional diffusion as an image-space environment model, Genie learned controllable latent actions from unlabeled video, and VideoPhy showed why visually plausible generated videos still require separate physical-consistency evaluation \cite{oh2015_action_conditional_video_prediction_prov,hafner2019_planet_prov,hafner2020_dreamer_prov,battaglia2016_interaction_networks_prov,watters2017_visual_interaction_networks_prov,janner2019_o2p2_prov,alonso2024_diamond_prov,bruce2024_genie_prov,bansal2025_videophy_prov}. This motivates a taxonomy based on modeling goal, representation, dynamics, conditioning, and evaluation.
 
-\paragraph{Planned subsections.}
-\begin{itemize}
-  \item Taxonomy axes.
-  \item Branch A: action-conditioned pixel and motion prediction.
-  \item Branch B: stochastic future modeling.
-  \item Branch C: object-centric and relational physical dynamics.
-  \item Branch D: latent world models for planning and control.
-  \item Branch E: image-space and diffusion-based world models.
-  \item Branch F: interactive and embodied generative environments.
-  \item Branch G: evaluation, physical consistency, and benchmarks.
-\end{itemize}
+\subsection{Taxonomy Axes}
 
-\paragraph{Key claims.}
-\begin{itemize}
-  \item C007: Object-centric and relational representations encode entities and interactions. Supporting papers: P007 \cite{battaglia2016_interaction_networks_prov}, P008 \cite{watters2017_visual_interaction_networks_prov}, P009 \cite{janner2019_o2p2_prov}.
-  \item C011: Latent world models use compact state dynamics for planning or policy learning. Supporting papers: P001 \cite{hafner2019_planet_prov}, P002 \cite{hafner2020_dreamer_prov}, P003 \cite{ha2018_world_models_prov}.
-  \item C015: Conditional diffusion can model image-space environment dynamics. Supporting papers: P012 \cite{alonso2024_diamond_prov}.
-  \item C018: Interactive generative environments can learn latent actions from unlabeled video. Supporting papers: P013 \cite{bruce2024_genie_prov}.
-  \item C021: Visual realism should not be equated with physical correctness. Supporting papers: P037 \cite{bansal2025_videophy_prov}, P012 \cite{alonso2024_diamond_prov}.
-\end{itemize}
+\paragraph{Modeling goal.}
+The first axis asks what the learned model is meant to make possible: frame prediction, stochastic forecasting, physical rollout, planning, policy learning, interactive generation, or evaluation. This axis separates models that mainly extrapolate videos from models whose predictions are used for intervention or decision making. For example, action-conditioned Atari prediction and robot pushing forecast future observations under actions, while PlaNet and Dreamer use learned dynamics to support planning or behavior learning \cite{oh2015_action_conditional_video_prediction_prov,finn2016_physical_interaction_video_prediction_prov,hafner2019_planet_prov,hafner2020_dreamer_prov}. The modeling goal therefore determines which failures matter: a visually plausible rollout may still be inadequate if it does not preserve control-relevant details or physical interactions.
 
-\paragraph{Expected figures and tables.}
-\begin{itemize}
-  \item Table 3: Concept-driven taxonomy branches.
-  \item Figure 2: Taxonomy map across representation, dynamics, conditioning, and evaluation.
-\end{itemize}
+\paragraph{Representation.}
+The second axis asks what state space carries the prediction. Pixel-space and motion-transform models predict or transform image observations directly \cite{oh2015_action_conditional_video_prediction_prov,finn2016_physical_interaction_video_prediction_prov}. Stochastic video predictors add latent variables to represent multiple plausible futures \cite{babaeizadeh2018_sv2p_prov}. Latent world models compress images into compact recurrent states for planning or imagined policy learning \cite{ha2018_world_models_prov,hafner2019_planet_prov,hafner2020_dreamer_prov}. Object-centric models instead represent entities, relations, or object-factorized latent states \cite{battaglia2016_interaction_networks_prov,watters2017_visual_interaction_networks_prov,janner2019_o2p2_prov}. Image-space diffusion world models occupy a different point in this design space because they retain generated observations as the rollout medium, which DIAMOND studies in Atari \cite{alonso2024_diamond_prov}.
 
-\paragraph{Missing evidence.}
-\begin{itemize}
-  \item Branches involving indexed papers without completed notes should remain provisional. \textbf{[NEEDS SOURCE]}
-  \item Evaluation branch needs completed notes for P033--P040 before becoming final. \textbf{[NEEDS SOURCE]}
-\end{itemize}
+\paragraph{Dynamics.}
+The third axis asks how the model rolls the world forward. Completed notes support several distinct mechanisms: action-conditioned feature transformations, pixel-motion transformations, variational stochastic video prediction, recurrent latent-state transitions, graph interaction dynamics, object-oriented perception-physics-rendering pipelines, conditional diffusion dynamics, and token dynamics with latent actions \cite{oh2015_action_conditional_video_prediction_prov,finn2016_physical_interaction_video_prediction_prov,babaeizadeh2018_sv2p_prov,hafner2019_planet_prov,hafner2020_dreamer_prov,battaglia2016_interaction_networks_prov,janner2019_o2p2_prov,alonso2024_diamond_prov,bruce2024_genie_prov}. This axis is not redundant with representation: two models may both operate on images while using different transition mechanisms, and two latent models may differ in whether they support online planning, actor-critic imagination, or modular policy evolution.
+
+\paragraph{Conditioning and interaction.}
+The fourth axis asks what information controls the rollout. Passive predictors condition mainly on past frames, but world-model use cases often require future states to depend on interventions. Actions enter explicitly in Atari prediction, robot manipulation prediction, PlaNet, Dreamer, and DIAMOND \cite{oh2015_action_conditional_video_prediction_prov,finn2016_physical_interaction_video_prediction_prov,hafner2019_planet_prov,hafner2020_dreamer_prov,alonso2024_diamond_prov}. Genie broadens the axis by learning discrete latent actions from unlabeled video rather than using ground-truth action labels \cite{bruce2024_genie_prov}. Conditioning is therefore the main boundary between merely predicting what is likely to happen and asking what could happen under alternative controls.
+
+\paragraph{Evaluation.}
+The fifth axis asks what property of the model is actually tested. Pixel metrics such as reconstruction loss, PSNR, and SSIM can be informative for frame prediction, but they do not by themselves establish planning utility, controllability, or physical correctness. Action-conditioned prediction can be evaluated through control usefulness, object-oriented prediction can be evaluated through planning success, and DIAMOND evaluates an image-space diffusion world model through Atari control performance \cite{oh2015_action_conditional_video_prediction_prov,janner2019_o2p2_prov,alonso2024_diamond_prov}. Physical-consistency evaluation adds a further test: VideoPhy evaluates whether generated videos satisfy both caption semantics and physical commonsense, and organizes prompts around material-interaction categories such as solid-solid, solid-fluid, and fluid-fluid interactions \cite{bansal2025_videophy_prov}. For this survey, evaluation is therefore a cross-cutting axis rather than a separate paper family.
+
+\subsection{Conceptual Families}
+
+The axes above define non-exclusive conceptual families. A paper may belong to several families at once, so the taxonomy should be read as an analytic map rather than a set of disjoint bins.
+
+\paragraph{Action-conditioned pixel and motion prediction.}
+This family covers models that predict future visual observations in image space while conditioning on known actions or robot commands. It provides an early bridge from passive video prediction to world modeling because the predicted future changes with the intervention. Action-conditioned Atari prediction uses control inputs to forecast high-dimensional game observations, while robot interaction prediction uses pixel-motion transformations to model how actions move objects \cite{oh2015_action_conditional_video_prediction_prov,finn2016_physical_interaction_video_prediction_prov}. This family prepares the later video-prediction section by showing why action conditioning and downstream utility matter before the survey moves to more abstract world states.
+
+\paragraph{Stochastic future modeling.}
+This family addresses cases where a single deterministic future is an inadequate target. SV2P uses latent variables to generate different plausible futures and reports design trade-offs between time-varying and time-invariant stochastic latents \cite{babaeizadeh2018_sv2p_prov}. The current evidence for this family is intentionally narrow because the completed claim bank supports it mainly through P006. The family nevertheless prepares the uncertainty section by identifying multi-modality, latent-variable use, and evaluation with sampled futures as distinct concerns.
+
+\paragraph{Object-centric and relational physical dynamics.}
+This family represents physical systems through entities, relations, or object-factorized latent states. Interaction Networks operate on explicit object-relation graphs, Visual Interaction Networks connect visual perception to relational dynamics, and O2P2 learns object-oriented perception, physics, and rendering for prediction and planning \cite{battaglia2016_interaction_networks_prov,watters2017_visual_interaction_networks_prov,janner2019_o2p2_prov}. The claims should remain qualified because much of the completed evidence comes from controlled or synthetic settings, and some models assume object states, segmentation, or supervised state targets. Even with these limits, the family prepares the structured-dynamics section by making object identity, relations, hidden causes, and planning relevance explicit.
+
+\paragraph{Latent world models for planning and control.}
+This family shifts the predictive state from pixels to compact latent dynamics. The recurrent world-model formulation factorizes perception, memory, and control into VAE, MDN-RNN, and controller modules; PlaNet plans in recurrent latent state space; and Dreamer trains behavior through imagined latent trajectories \cite{ha2018_world_models_prov,hafner2019_planet_prov,hafner2020_dreamer_prov}. This family prepares the planning-and-control section by separating online planning, amortized policy learning, and policy optimization inside learned or hallucinated environments. It also exposes an evaluation gap: strong control return does not automatically prove physical faithfulness in open-ended video domains.
+
+\paragraph{Image-space and diffusion-based world models.}
+This family asks when strong image-space generative models can function as predictive simulators. In the completed notes, DIAMOND is the evidence-ready anchor: it models environment dynamics with a conditional diffusion model over observations and actions, and evaluates the resulting world model through Atari agent performance \cite{alonso2024_diamond_prov}. Broader claims about video diffusion as a general world-modeling paradigm should remain provisional until the corresponding diffusion-video notes are completed. This family prepares the diffusion section by framing the trade-off between compact abstraction and preservation of control-relevant visual details.
+
+\paragraph{Interactive and embodied generative environments.}
+This family focuses on controllable video worlds. It includes models with explicit actions, such as action-conditioned Atari and robot-pushing predictors, and models with learned latent controls, such as Genie \cite{oh2015_action_conditional_video_prediction_prov,finn2016_physical_interaction_video_prediction_prov,bruce2024_genie_prov}. Genie shows that controllability can be induced from unlabeled video through latent actions, but its actions are not yet equivalent to semantically grounded real-world interventions. This family prepares the interactive-environments section by separating known actions, robot commands, learned latent actions, and downstream imitation or control evaluations.
+
+\paragraph{Evaluation, physical consistency, and benchmarks.}
+Evaluation is a cross-cutting family because every modeling branch can look different depending on what is measured. Frame metrics test visual prediction, planning success tests action usefulness, control return tests policy utility, and physical-consistency benchmarks test whether generated dynamics obey commonsense constraints \cite{oh2015_action_conditional_video_prediction_prov,janner2019_o2p2_prov,alonso2024_diamond_prov,bansal2025_videophy_prov}. VideoPhy is especially important for this survey boundary because it treats visual plausibility and physical correctness as separate evaluation targets \cite{bansal2025_videophy_prov}. This family prepares the later evaluation section by making clear that world-model correctness cannot be reduced to generic video quality.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\caption{Concept-driven taxonomy used in this survey. Branches are non-exclusive: a single paper may contribute to multiple rows.}
+\label{tab:taxonomy_branches}
+\begin{tabular}{p{0.18\linewidth} p{0.20\linewidth} p{0.19\linewidth} p{0.18\linewidth} p{0.17\linewidth}}
+\toprule
+Family & Modeling goal & Representation & Conditioning & Evidence-ready examples \\
+\midrule
+Action-conditioned pixel/motion prediction & Predict future video under interventions & Pixels, features, motion transforms & Past frames plus actions & P004, P005 \\
+Stochastic future modeling & Model multiple plausible futures & Pixels plus stochastic latents & Past frames, optional actions, latent samples & P006 \\
+Object-centric physical dynamics & Model entities, relations, and physical interactions & Object states, graphs, object latents & Objects, relations, visual observations & P007, P008, P009 \\
+Latent planning and control & Support planning, policy learning, or policy evolution & Compact latent states, RSSM, VAE/RNN latents & Observations, actions, rewards, policies & P001, P002, P003 \\
+Diffusion world models & Use image-space generation as environment dynamics & Images and diffusion/noise space & Observation-action history & P012 \\
+Interactive environments & Generate controllable video futures & Video tokens, latent actions, interactive states & Actions, robot commands, latent actions & P004, P005, P013 \\
+Evaluation and benchmarks & Test usefulness and correctness & Metrics, prompts, generated videos, human judgments & Tasks, prompts, labels, actions & P004, P009, P012, P037 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This taxonomy prepares the remaining survey sections by assigning each body section a question rather than a paper list. The video-prediction section asks when future-frame prediction becomes useful for world modeling; the stochastic section asks how models represent multiple futures; the structured-dynamics section asks when object and relation biases help physical prediction; the latent-control section asks how compact states support planning or policy learning; the diffusion section asks when image-space generation is worth its cost; the interactive-environments section asks how control enters video generation; and the evaluation section asks how to test physical consistency, controllability, and utility beyond visual realism.
