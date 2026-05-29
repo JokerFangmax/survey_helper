@@ -1,0 +1,35 @@
+\section{From Video Prediction to World Modeling}
+
+\paragraph{Section thesis.}
+Early video prediction becomes relevant to world modeling when predictions are conditioned on actions, evaluated for control utility, or designed around physical interactions.
+
+\paragraph{Planned subsections.}
+\begin{itemize}
+  \item Passive prediction versus action-conditioned prediction.
+  \item Motion-transform prediction for physical interaction.
+  \item Stochastic futures and uncertainty.
+  \item Evaluation beyond frame metrics.
+\end{itemize}
+
+\paragraph{Key claims.}
+\begin{itemize}
+  \item C001: Action-conditioned video prediction bridges passive prediction and world modeling. Supporting papers: P004 \cite{oh2015_action_conditional_video_prediction_prov}.
+  \item C002: Pixel-motion prediction transforms observed pixels rather than reconstructing all appearance. Supporting papers: P005 \cite{finn2016_physical_interaction_video_prediction_prov}.
+  \item C003: Frame quality alone is insufficient for world-model evaluation. Supporting papers: P004 \cite{oh2015_action_conditional_video_prediction_prov}, P009 \cite{janner2019_o2p2_prov}, P012 \cite{alonso2024_diamond_prov}.
+  \item C004: Stochastic latents address multi-modal future prediction. Supporting papers: P006 \cite{babaeizadeh2018_sv2p_prov}.
+  \item C005: Stochastic video models can require staged training to prevent latent ignoring. Supporting papers: P006 \cite{babaeizadeh2018_sv2p_prov}.
+  \item C006: Time-varying and time-invariant latents capture different uncertainty structures. Supporting papers: P006 \cite{babaeizadeh2018_sv2p_prov}.
+  \item C019: Prediction becomes embodied when futures depend on actions, policies, or latent controls. Supporting papers: P004 \cite{oh2015_action_conditional_video_prediction_prov}, P005 \cite{finn2016_physical_interaction_video_prediction_prov}, P013 \cite{bruce2024_genie_prov}.
+\end{itemize}
+
+\paragraph{Expected figures and tables.}
+\begin{itemize}
+  \item Figure 3: Passive prediction, action-conditioned prediction, and stochastic rollouts.
+  \item Table 4: Video prediction objectives, conditioning signals, and evaluation protocols.
+\end{itemize}
+
+\paragraph{Missing evidence.}
+\begin{itemize}
+  \item Notes for P024--P028 are needed before presenting a complete historical video-prediction arc. \textbf{[NEEDS SOURCE]}
+  \item Broader support for stochastic video generation beyond P006 is pending. \textbf{[NEEDS SOURCE]}
+\end{itemize}

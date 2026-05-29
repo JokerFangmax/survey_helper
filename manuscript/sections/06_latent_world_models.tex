@@ -1,0 +1,33 @@
+\section{Latent World Models for Planning and Control}
+
+\paragraph{Section thesis.}
+Latent world models make predictive modeling useful for control by replacing expensive image rollouts with compact dynamics for planning, policy learning, or policy evolution.
+
+\paragraph{Planned subsections.}
+\begin{itemize}
+  \item Modular latent world models and hallucinated environments.
+  \item RSSM planning from pixels.
+  \item Latent imagination and actor-critic learning.
+  \item Simulator fidelity, exploitation, and abstraction-fidelity trade-offs.
+\end{itemize}
+
+\paragraph{Key claims.}
+\begin{itemize}
+  \item C011: Latent world models use compact state dynamics for planning or policy learning. Supporting papers: P001 \cite{hafner2019_planet_prov}, P002 \cite{hafner2020_dreamer_prov}, P003 \cite{ha2018_world_models_prov}.
+  \item C012: Deterministic-plus-stochastic recurrent latent states support sample-efficient visual control. Supporting papers: P001 \cite{hafner2019_planet_prov}, P002 \cite{hafner2020_dreamer_prov}.
+  \item C013: Latent imagination can train actor-critic behavior without online planning. Supporting papers: P002 \cite{hafner2020_dreamer_prov}.
+  \item C014: Training policies in learned simulators is powerful but raises simulator-fidelity concerns. Supporting papers: P003 \cite{ha2018_world_models_prov}, P001 \cite{hafner2019_planet_prov}, P012 \cite{alonso2024_diamond_prov}.
+  \item C026: Compact latent abstraction and image-space detail preservation create a trade-off. Supporting papers: P001 \cite{hafner2019_planet_prov}, P002 \cite{hafner2020_dreamer_prov}, P012 \cite{alonso2024_diamond_prov}.
+\end{itemize}
+
+\paragraph{Expected figures and tables.}
+\begin{itemize}
+  \item Figure 5: Latent world-model control loop.
+  \item Table 6: Online planning, latent imagination, and hallucinated policy training.
+\end{itemize}
+
+\paragraph{Missing evidence.}
+\begin{itemize}
+  \item Notes for P010, P014--P016, and P032 are needed before modern latent-model coverage. \textbf{[NEEDS SOURCE]}
+  \item Direct evidence on simulator exploitation and physical failures remains thin. \textbf{[NEEDS SOURCE]}
+\end{itemize}

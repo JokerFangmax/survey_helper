@@ -1,0 +1,39 @@
+\section{Diffusion-Based and Interactive World Models}
+
+\paragraph{Section thesis.}
+Diffusion-based world models revisit image-space simulation with stronger generative machinery, while interactive world models extend prediction from watching video to controlling video worlds.
+
+\paragraph{Planned subsections.}
+\begin{itemize}
+  \item Image-space diffusion as environment dynamics.
+  \item Fidelity versus abstraction in control.
+  \item Known actions, robot commands, and latent actions.
+  \item Interactive generative environments from unlabeled video.
+  \item Physical-correctness limits for visually strong generators.
+\end{itemize}
+
+\paragraph{Key claims.}
+\begin{itemize}
+  \item C015: Conditional diffusion can model image-space environment dynamics. Supporting papers: P012 \cite{alonso2024_diamond_prov}.
+  \item C016: Preserving visual details can improve RL performance. Supporting papers: P012 \cite{alonso2024_diamond_prov}.
+  \item C017: Diffusion fidelity does not yet establish physical correctness in embodied domains. Supporting papers: P012 \cite{alonso2024_diamond_prov}.
+  \item C018: Interactive generative environments can learn latent actions from unlabeled video. Supporting papers: P013 \cite{bruce2024_genie_prov}.
+  \item C019: Prediction becomes embodied when futures depend on actions, policies, or latent controls. Supporting papers: P004 \cite{oh2015_action_conditional_video_prediction_prov}, P005 \cite{finn2016_physical_interaction_video_prediction_prov}, P013 \cite{bruce2024_genie_prov}.
+  \item C020: Learned latent actions can support downstream imitation in narrow settings. Supporting papers: P013 \cite{bruce2024_genie_prov}.
+  \item C021: Visual realism should not be equated with physical correctness. Supporting papers: P037 \cite{bansal2025_videophy_prov}, P012 \cite{alonso2024_diamond_prov}.
+  \item C026: Compact latent abstraction and image-space detail preservation create a trade-off. Supporting papers: P001 \cite{hafner2019_planet_prov}, P002 \cite{hafner2020_dreamer_prov}, P012 \cite{alonso2024_diamond_prov}.
+\end{itemize}
+
+\paragraph{Expected figures and tables.}
+\begin{itemize}
+  \item Figure 6: Latent rollout versus image-space diffusion rollout.
+  \item Figure 7: Known-action control versus latent-action control.
+  \item Table 7: Fidelity, compute, controllability, and evaluation trade-offs.
+\end{itemize}
+
+\paragraph{Missing evidence.}
+\begin{itemize}
+  \item Notes for P011, P020, and P022 are needed before presenting the diffusion lineage. \textbf{[NEEDS SOURCE]}
+  \item Notes for P016, P021, P022, and P024 are needed before broad embodied and interactive coverage. \textbf{[NEEDS SOURCE]}
+  \item Physical-law evaluation of diffusion rollouts remains under-supported by completed notes. \textbf{[NEEDS SOURCE]}
+\end{itemize}

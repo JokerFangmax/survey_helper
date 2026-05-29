@@ -1,0 +1,37 @@
+\section{Evaluation and Open Challenges}
+
+\paragraph{Section thesis.}
+Evaluating video world models requires combining visual fidelity, control utility, physical commonsense, causal validity, controllability, and long-horizon behavior.
+
+\paragraph{Planned subsections.}
+\begin{itemize}
+  \item Why visual fidelity is not enough.
+  \item Control utility and planning success.
+  \item Physical commonsense and material-interaction benchmarks.
+  \item Automatic evaluators and human verification.
+  \item Open challenges: evaluation, structure, controllability, and abstraction-fidelity.
+\end{itemize}
+
+\paragraph{Key claims.}
+\begin{itemize}
+  \item C003: Frame quality alone is insufficient for world-model evaluation. Supporting papers: P004 \cite{oh2015_action_conditional_video_prediction_prov}, P009 \cite{janner2019_o2p2_prov}, P012 \cite{alonso2024_diamond_prov}.
+  \item C021: Visual realism should not be equated with physical correctness. Supporting papers: P037 \cite{bansal2025_videophy_prov}, P012 \cite{alonso2024_diamond_prov}.
+  \item C022: Physical-consistency benchmarks can categorize material interactions. Supporting papers: P037 \cite{bansal2025_videophy_prov}.
+  \item C023: Automatic evaluators can scale physical-consistency evaluation but still approximate human judgment. Supporting papers: P037 \cite{bansal2025_videophy_prov}.
+  \item C024: Evaluation should go beyond pixel fidelity and reward. Supporting papers: P004 \cite{oh2015_action_conditional_video_prediction_prov}, P012 \cite{alonso2024_diamond_prov}, P013 \cite{bruce2024_genie_prov}, P037 \cite{bansal2025_videophy_prov}.
+  \item C025: Learning object structure, hidden variables, and interaction dynamics without direct supervision is an open challenge. Supporting papers: P005 \cite{finn2016_physical_interaction_video_prediction_prov}, P007 \cite{battaglia2016_interaction_networks_prov}, P008 \cite{watters2017_visual_interaction_networks_prov}, P009 \cite{janner2019_o2p2_prov}, P013 \cite{bruce2024_genie_prov}.
+  \item C026: Compact latent abstraction and image-space detail preservation create a trade-off. Supporting papers: P001 \cite{hafner2019_planet_prov}, P002 \cite{hafner2020_dreamer_prov}, P012 \cite{alonso2024_diamond_prov}.
+\end{itemize}
+
+\paragraph{Expected figures and tables.}
+\begin{itemize}
+  \item Figure 8: Evaluation matrix crossing fidelity, control, physical consistency, and generalization.
+  \item Table 8: Evaluation protocols and what they test.
+  \item Table 9: Open challenges mapped to evidence gaps.
+\end{itemize}
+
+\paragraph{Missing evidence.}
+\begin{itemize}
+  \item Notes for P033--P036 and P038--P040 are needed before the benchmark discussion is complete. \textbf{[NEEDS SOURCE]}
+  \item Direct comparisons among FVD, physical-reasoning benchmarks, prompt-based commonsense benchmarks, and control returns are pending. \textbf{[NEEDS SOURCE]}
+\end{itemize}
