@@ -1,33 +1,44 @@
 \section{Latent World Models for Planning and Control}
+\label{sec:latent_world_models}
 
-\paragraph{Section thesis.}
-Latent world models make predictive modeling useful for control by replacing expensive image rollouts with compact dynamics for planning, policy learning, or policy evolution.
+Latent world models shift the central objective from predicting videos to learning compact dynamics that are useful for decision making. The previous sections moved from pixels to objects and relations; this section considers a different abstraction: a learned state that may not be visually interpretable, but can support planning, policy learning, or policy evolution. In this branch, images are compressed into latent variables, dynamics are learned over those variables, and control is evaluated through returns or planning success rather than only frame reconstruction. This shift is crucial for predictive world models from video because a visually accurate rollout is not always the most efficient representation for choosing actions.
 
-\paragraph{Planned subsections.}
-\begin{itemize}
-  \item Modular latent world models and hallucinated environments.
-  \item RSSM planning from pixels.
-  \item Latent imagination and actor-critic learning.
-  \item Simulator fidelity, exploitation, and abstraction-fidelity trade-offs.
-\end{itemize}
+\subsection{From Video Rollouts to Compact Latent Simulators}
 
-\paragraph{Key claims.}
-\begin{itemize}
-  \item C011: Latent world models use compact state dynamics for planning or policy learning. Supporting papers: P001 \cite{hafner2019_planet_prov}, P002 \cite{hafner2020_dreamer_prov}, P003 \cite{ha2018_world_models_prov}.
-  \item C012: Deterministic-plus-stochastic recurrent latent states support sample-efficient visual control. Supporting papers: P001 \cite{hafner2019_planet_prov}, P002 \cite{hafner2020_dreamer_prov}.
-  \item C013: Latent imagination can train actor-critic behavior without online planning. Supporting papers: P002 \cite{hafner2020_dreamer_prov}.
-  \item C014: Training policies in learned simulators is powerful but raises simulator-fidelity concerns. Supporting papers: P003 \cite{ha2018_world_models_prov}, P001 \cite{hafner2019_planet_prov}, P012 \cite{alonso2024_diamond_prov}.
-  \item C026: Compact latent abstraction and image-space detail preservation create a trade-off. Supporting papers: P001 \cite{hafner2019_planet_prov}, P002 \cite{hafner2020_dreamer_prov}, P012 \cite{alonso2024_diamond_prov}.
-\end{itemize}
+The early recurrent world-model formulation crystallized the idea that a learned latent model can act as a simulator for downstream control. The model factorizes perception, memory, and action into a VAE, an MDN-RNN, and a controller, compressing observations into latent vectors and predicting future latent dynamics rather than rolling pixels forward directly \cite{ha2018_world_models_prov}. In this view, the world model is not merely a video predictor with a smaller output space. It is a representation of the environment that can be queried by a policy, optimized inside, or used as a surrogate environment for behavior search.
 
-\paragraph{Expected figures and tables.}
-\begin{itemize}
-  \item Figure 5: Latent world-model control loop.
-  \item Table 6: Online planning, latent imagination, and hallucinated policy training.
-\end{itemize}
+This modular formulation also exposes a recurring tension in latent world modeling. Policies can be trained inside a hallucinated environment and transferred back to the real one, but this makes simulator fidelity a central concern \cite{ha2018_world_models_prov}. If the learned dynamics are inaccurate in control-relevant regions, the controller may exploit model errors or fail when transferred. The completed evidence supports this concern as a limitation and open question rather than as a fully characterized failure mode. The section therefore treats latent simulators as powerful control substrates whose reliability must be judged by how they are used, not only by how well they reconstruct observations.
 
-\paragraph{Missing evidence.}
-\begin{itemize}
-  \item Notes for P010, P014--P016, and P032 are needed before modern latent-model coverage. \textbf{[NEEDS SOURCE]}
-  \item Direct evidence on simulator exploitation and physical failures remains thin. \textbf{[NEEDS SOURCE]}
-\end{itemize}
+\subsection{RSSM Dynamics and Online Planning}
+
+PlaNet made the latent-control formulation more systematic by planning directly in a recurrent state-space model. Its RSSM combines deterministic memory with stochastic latent variables, learns observation and reward models, and performs online model-predictive control by searching candidate action sequences in latent space \cite{hafner2019_planet_prov}. This design separates the role of image generation from the role of decision making: decoded images may be useful for training or diagnostics, but planning itself uses latent states and predicted rewards. In the taxonomy of this survey, PlaNet therefore marks a clear move from image-space prediction toward compact state dynamics for action selection.
+
+RSSM-style models also illustrate why the internal structure of the latent state matters. The completed notes report that PlaNet's deterministic and stochastic components are important for performance, suggesting that latent world models need both memory for partial observability and uncertainty-aware state variables for prediction \cite{hafner2019_planet_prov}. This is not the same as the stochastic video-prediction problem in Section~\ref{sec:video_prediction}: here, uncertainty is embedded in a control-oriented state that is trained with observation and reward objectives. The relevant question becomes whether the latent state preserves the information needed for planning, not whether every generated frame is visually sharp.
+
+\subsection{Latent Imagination and Policy Learning}
+
+Dreamer changes the role of the latent model from an online planner to an imagination engine for policy learning. Instead of searching over action sequences at each decision point, Dreamer trains an actor and critic from imagined latent trajectories, using gradients through the learned dynamics and value estimates \cite{hafner2020_dreamer_prov}. This amortizes decision making into a learned policy and makes the world model a training substrate for long-horizon behavior. The conceptual shift is important: the learned dynamics are no longer only a model to plan through at test time, but a generator of imagined experience for updating behavior.
+
+This imagination-based formulation strengthens the case that world-model evaluation differs from visual reconstruction quality. Dreamer is evaluated through visual-control performance and data efficiency, and the completed notes emphasize behavior learning through latent imagination rather than pixel-space rollout fidelity \cite{hafner2020_dreamer_prov}. Together with PlaNet and the recurrent world-model formulation, this supports the survey's core latent-model claim: compact predictive states can make video-based world modeling useful for planning or policy learning \cite{ha2018_world_models_prov,hafner2019_planet_prov,hafner2020_dreamer_prov}. However, return-based evaluation still does not guarantee physical faithfulness or open-ended simulation quality. A latent model can be useful for a reward-defined task while remaining weak as a general physical simulator.
+
+\subsection{Discrete, Token, Robotic, and Feature-Space Extensions}
+
+Several important modern extensions belong in this conceptual family, but the current notes do not yet support detailed claims about them. The paper index includes discrete latent world models, transformer or token-based world models, physical robot world models, feature-space planning with pretrained visual representations, and contextualized world-model pretraining from in-the-wild videos. These directions correspond to the user's requested categories of discrete latent states, transformer/token world models, and feature-space world models. Yet notes for DreamerV2, IRIS, DayDreamer, DINO-WM, and Contextualized World Models are currently incomplete or contain `UNKNOWN` evidence fields. Claims about their architectures, benchmarks, data efficiency, robotic performance, zero-shot planning, or in-the-wild pretraining therefore remain [NEEDS SOURCE].
+
+Even without those details, the comparison axes are clear. Discrete latent models ask whether quantized states improve long-horizon control or representation learning; token and transformer models ask whether sequence modeling can replace recurrent latent dynamics; robot world models ask whether latent imagination transfers to physical interaction; feature-space world models ask whether pretrained visual features can serve as predictive state; and contextualized pretraining asks whether broad video data can improve later reinforcement learning. These are promising coverage targets, but they should not be folded into the supported narrative until the notes establish what each paper actually demonstrates.
+
+\subsection{Limits and Transition to Image-Space World Models}
+
+Latent world models trade visual detail for compactness and control utility. This is often a strength: planning in latent space can avoid expensive image rollouts, and actor-critic imagination can reuse a learned model to generate many behavior-learning trajectories \cite{hafner2019_planet_prov,hafner2020_dreamer_prov}. But the same abstraction creates limitations. Latent states are optimized around reconstruction, reward, value, or control objectives, so they may discard details that later matter for action. They are also typically evaluated in specific environments with defined rewards, leaving open questions about physical abstraction, compounding model error, simulator exploitation, and transfer to more complex real-world video.
+
+The abstraction-fidelity trade-off motivates the next section on image-space and diffusion-based world models. PlaNet and Dreamer show why compact latent dynamics are attractive for planning and policy learning; DIAMOND, by contrast, argues that preserving image-space visual details can improve downstream reinforcement learning in Atari \cite{hafner2019_planet_prov,hafner2020_dreamer_prov,alonso2024_diamond_prov}. The transition is therefore not a simple progression from worse to better representations. It is a shift in design pressure: latent models emphasize efficient predictive state for control, while diffusion and interactive models revisit whether richer image-space generation or controllable video synthesis can preserve information that compact latents may lose.
+
+% Concise Claim-Evidence Audit:
+% - Major claims:
+%   Latent world models shift prediction from pixel/video rollouts to compact dynamics for planning, policy learning, or policy evolution; RSSM dynamics combine deterministic and stochastic state components for visual control; latent imagination enables actor-critic behavior learning; visual reconstruction quality differs from planning/control utility; compact latent abstraction creates a fidelity trade-off.
+% - Supporting papers:
+%   P003 / ha2018_world_models_prov; P001 / hafner2019_planet_prov; P002 / hafner2020_dreamer_prov; transition evidence from P012 / alonso2024_diamond_prov.
+% - Weak or missing evidence:
+%   DreamerV2, IRIS, DayDreamer, DINO-WM, and Contextualized World Models remain [NEEDS SOURCE] because notes for P015, P014, P016, P010, and P032 are incomplete or contain UNKNOWN evidence fields.
+% - Revision TODOs:
+%   Complete notes for P010, P014--P016, and P032; add a comparison table for online planning, latent imagination, discrete/token models, robot transfer, and feature-space planning; strengthen simulator-fidelity discussion with direct evidence on model exploitation or sim-to-real failures.
