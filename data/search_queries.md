@@ -110,3 +110,109 @@ Exclude or mark as low priority if:
   - physical consistency metrics
   - survey papers on video prediction and world models
   - missing SIGGRAPH / CoRL / RSS papers
+
+## Round 2: Targeted Literature Expansion
+
+- Date: 2026-05-30
+- Tool: ChatGPT Deep Research / targeted literature expansion
+- Output file: `data/targeted_literature_expansion_report.md`
+- Ingestion action:
+  - Append verified non-duplicate papers to `data/papers.csv`.
+  - Append matching BibTeX entries to `bib/references.bib`.
+  - Create placeholder notes from `templates/paper_note_template.md`.
+  - Skip duplicates already represented in the existing database.
+
+### Main search goal
+
+Patch literature-coverage gaps identified by the reviewer-style audit and the major-revision backlog. The targeted search focused on under-covered families in Sections 04-08: recurrent and architecture-oriented video prediction, object-centric video representation and dynamics, modern latent/token/feature-space world models, interactive/generative world simulators, driving world models, and physical/world-generation evaluation benchmarks.
+
+### Keyword groups
+
+#### Video prediction / visual dynamics baselines
+
+- ConvLSTM video prediction
+- PredRNN spatiotemporal predictive learning
+- PredRNN++ deep-in-time dilemma
+- Memory In Memory spatiotemporal dynamics
+- VideoGPT VQ-VAE Transformers
+
+#### Object-centric / structured world models
+
+- Slot Attention object-centric learning
+- SAVi conditional object-centric learning from video
+- SAVi++ real-world videos object-centric learning
+- real-world object-centric video temporal feature similarities
+- slot-based visual dynamics simulation
+
+#### Latent / token / feature-space world models
+
+- DreamerV3 mastering diverse domains world models
+- interactive VideoGPT scalable world models
+- token world models video interaction
+- feature-space world models planning
+
+#### Generative simulation / interactive world models
+
+- Sora video generation models as world simulators
+- UniSim learning interactive real-world simulators
+- GAIA-1 generative world model autonomous driving
+- DriveDreamer world models autonomous driving
+- Cosmos world foundation model physical AI
+
+#### Physical and world-generation evaluation
+
+- WorldScore unified evaluation benchmark world generation
+- physical-law evaluation video generation
+- physical commonsense benchmark video generation
+- world generation evaluation benchmark
+
+### Inclusion criteria
+
+Include a paper if it satisfies at least one of the following:
+
+- It was explicitly requested by the reviewer audit as missing coverage.
+- It fills a gap in architecture-oriented video prediction baselines.
+- It extends object-centric learning from static or synthetic settings toward video or real-world video.
+- It extends latent world models through diverse-domain training, tokenization, interactivity, robot learning, feature-space planning, or video pretraining.
+- It proposes interactive or controllable video/world simulation.
+- It provides evaluation protocols for physical consistency, causal reasoning, controllability, or broader world generation.
+
+### Duplicate detection protocol
+
+Before appending, compare each candidate against existing `data/papers.csv` and `bib/references.bib` by:
+
+- normalized title,
+- arXiv ID,
+- URL,
+- `bibtex_key`,
+- and clear title/author equivalence when report titles differ slightly from existing rows.
+
+### Round 2 ingestion notes
+
+- Candidate report IDs considered: P041-P078.
+- New papers appended: P041, P042, P043, P044, P049, P050, P051, P052, P054, P057, P062, P063, P064, P065, P066, P067, P068, P078.
+- Duplicate candidates skipped because they already existed in the database:
+  - P045 duplicates existing P025 (Eidetic 3D LSTM).
+  - P046 duplicates existing P026 (SimVP).
+  - P047 duplicates existing P023 (PhyDNet / Disentangling Physical Dynamics).
+  - P048 duplicates existing P020 (MCVD).
+  - P053 duplicates existing P017 (C-SWM).
+  - P055 duplicates existing P018 (SlotFormer).
+  - P056 duplicates existing P015 (DreamerV2).
+  - P058 duplicates existing P014 (IRIS).
+  - P059 duplicates existing P016 (DayDreamer).
+  - P060 duplicates existing P010 (DINO-WM).
+  - P061 duplicates existing P032 (Contextualized World Models).
+  - P069 duplicates existing P021 (VideoWorld).
+  - P070 duplicates existing P022 (Vid2World).
+  - P071 duplicates existing P033 (PHYRE).
+  - P072 duplicates existing P034 (CLEVRER).
+  - P073 duplicates existing P035 (Physion).
+  - P074 duplicates existing P037 (VideoPhy).
+  - P075 duplicates existing P038 (PhyGenBench).
+  - P076 duplicates existing P039 (How Far Is Video Generation from World Model).
+  - P077 duplicates existing P040 (Physics-IQ).
+
+### Round 2 caution
+
+Placeholder notes created in this round are not evidence-ready reading notes. They should not be used to support technical manuscript claims until their `UNKNOWN` fields are replaced by verified evidence extracted from the corresponding paper.
