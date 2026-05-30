@@ -1,33 +1,7 @@
 \section{Conclusion}
 
-\paragraph{Section thesis.}
-The conclusion should synthesize the survey's conceptual arc and evidence gaps without introducing new claims.
+This survey has argued that predictive world models from video should be understood by the role their predictions play, rather than by visual generation quality alone. Future-frame prediction is an important starting point, especially when it is action-conditioned or uncertainty-aware, but it becomes world-model relevant when it supports reasoning about interventions, physical change, planning, controllability, or evaluation beyond reconstruction. The central perspective of the survey is therefore concept-driven: modeling goal, representation, dynamics, conditioning, and evaluation jointly determine what kind of world model a system learns.
 
-\paragraph{Planned subsections.}
-\begin{itemize}
-  \item Recap of the concept-driven taxonomy.
-  \item Recap of supported claims.
-  \item Evidence gaps that must remain explicit.
-  \item Final outlook after remaining notes are completed.
-\end{itemize}
+Across the reviewed literature, the field shows a progression from pixel-level video prediction toward increasingly structured and interactive forms of generative simulation. Object-centric and relational models introduce entities, interactions, and hidden physical variables as useful abstractions for physical dynamics. Latent world models shift prediction into compact states that can support planning, policy learning, or imagined experience. Diffusion-based and interactive models revisit image-space simulation and controllable video generation, while also making the abstraction-fidelity trade-off more explicit. Evaluation then becomes a cross-cutting concern: visual fidelity, control return, physical consistency, causal validity, and controllability test different aspects of world-model behavior.
 
-\paragraph{Key claims.}
-\begin{itemize}
-  \item Reuse only claims already established in Sections 3--8.
-  \item Do not introduce new technical claims in this section.
-\end{itemize}
-
-\paragraph{Supporting papers and citation keys.}
-\begin{itemize}
-  \item No new citations should be introduced here unless they already appeared in earlier sections.
-\end{itemize}
-
-\paragraph{Expected figures and tables.}
-\begin{itemize}
-  \item Optional final roadmap figure if Figure 1 is not overloaded.
-\end{itemize}
-
-\paragraph{Missing evidence.}
-\begin{itemize}
-  \item Summarize unresolved \textbf{[NEEDS SOURCE]} items from prior sections rather than hiding them.
-\end{itemize}
+The main unresolved challenge is to build models that are simultaneously visually realistic, dynamically predictive, physically consistent, and interactively controllable. Current evidence suggests that progress along one axis does not guarantee progress along the others: realistic videos may remain physically inconsistent, compact latent states may omit control-relevant details, and controllable rollouts may still lack grounded physical semantics. A cautious path forward is to treat video world modeling as both a representation-learning problem and an evaluation problem, with future work comparing models under tasks that jointly test prediction, interaction, long-horizon consistency, and physical validity.
