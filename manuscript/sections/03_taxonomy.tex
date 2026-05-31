@@ -24,6 +24,30 @@ The fifth axis asks what property of the model is actually tested. Pixel metrics
 
 The axes above define non-exclusive conceptual families. A paper may belong to several families at once, so the taxonomy should be read as an analytic map rather than a set of disjoint bins.
 
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[
+  family/.style={draw, rounded corners=2pt, align=center, font=\small, inner sep=4pt, minimum width=2.5cm, fill=gray!8},
+  axis/.style={-Latex, thick}
+]
+  \draw[axis] (0,0) -- (8.2,0) node[right, align=left, font=\small] {Representation\\more abstract};
+  \draw[axis] (0,0) -- (0,4.8) node[above, align=center, font=\small] {Dynamics\\more interactive};
+  \node[font=\small] at (1.1,-0.35) {pixels};
+  \node[font=\small] at (3.8,-0.35) {objects / latents};
+  \node[font=\small] at (6.8,-0.35) {tokens / diffusion};
+  \node[family, fill=blue!8] at (1.3,1.1) {Pixel\\prediction};
+  \node[family, fill=blue!14] at (1.6,3.1) {Stochastic\\futures};
+  \node[family, fill=green!12] at (3.7,2.2) {Object-centric\\dynamics};
+  \node[family, fill=orange!14] at (5.0,1.35) {Latent\\control};
+  \node[family, fill=red!10] at (6.4,2.7) {Diffusion\\simulators};
+  \node[family, fill=purple!10] at (7.0,4.0) {Interactive\\environments};
+  \node[align=left, font=\scriptsize] at (2.1,4.25) {action / latent-action\\conditioning};
+  \node[align=left, font=\scriptsize] at (5.8,0.55) {compact state\\for decisions};
+\end{tikzpicture}
+\caption{Conceptual families arranged by representation and dynamics. The placement is schematic rather than exclusive: several papers combine multiple positions, such as image-space diffusion with action-conditioned rollout or token models with interactive control.}
+\label{fig:taxonomy_grid}
+\end{figure}
+
 \paragraph{Action-conditioned pixel and motion prediction.}
 This family covers models that predict future visual observations in image space while conditioning on known actions or robot commands. It provides an early bridge from passive video prediction to world modeling because the predicted future changes with the intervention. Action-conditioned Atari prediction uses control inputs to forecast high-dimensional game observations, while robot interaction prediction uses pixel-motion transformations to model how actions move objects \cite{oh2015_action_conditional_video_prediction_prov,finn2016_physical_interaction_video_prediction_prov}. This family prepares the later video-prediction section by showing why action conditioning and downstream utility matter before the survey moves to more abstract world states.
 

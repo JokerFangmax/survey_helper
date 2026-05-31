@@ -3,6 +3,30 @@
 
 Latent world models shift the central objective from predicting videos to learning compact dynamics that are useful for decision making. The previous sections moved from pixels to objects and relations; this section considers a different abstraction: a learned state that may not be visually interpretable, but can support planning, policy learning, or policy evolution. In this branch, images are compressed into latent variables, dynamics are learned over those variables, and control is evaluated through returns or planning success rather than only frame reconstruction. This shift is crucial for predictive world models from video because a visually accurate rollout is not always the most efficient representation for choosing actions.
 
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[
+  point/.style={circle, draw, fill=white, inner sep=2pt},
+  label/.style={align=center, font=\small},
+  note/.style={align=center, font=\scriptsize, text width=2.7cm}
+]
+  \draw[thick, -Latex] (0,0) -- (9,0) node[right, font=\small] {higher visual fidelity};
+  \draw[thick, -Latex] (0,0) -- (0,3.6) node[above, align=center, font=\small] {higher\\abstraction};
+  \draw[very thick, color=black!70] (0.8,3.0) .. controls (3.0,2.2) and (5.7,1.2) .. (8.2,0.55);
+  \node[point, fill=orange!15] (latent) at (1.2,2.85) {};
+  \node[label, above=3pt of latent] {Latent\\states};
+  \node[note, below=8pt of latent] {efficient planning;\\may discard details};
+  \node[point, fill=green!15] (object) at (4.1,1.85) {};
+  \node[label, above=3pt of object] {Object-centric\\structure};
+  \node[note, below=8pt of object] {interpretable relations;\\often assumes structure};
+  \node[point, fill=red!12] (diff) at (7.6,0.75) {};
+  \node[label, above=3pt of diff] {Pixels /\\diffusion};
+  \node[note, below=8pt of diff] {rich details;\\higher cost and harder physics};
+\end{tikzpicture}
+\caption{The abstraction-fidelity trade-off. Latent models emphasize compact state for planning, object-centric models add interpretable structure, and pixel or diffusion models preserve visual detail but require stronger evaluation for rollout validity and physical consistency.}
+\label{fig:abstraction_fidelity}
+\end{figure}
+
 \subsection{From Video Rollouts to Compact Latent Simulators}
 
 The early recurrent world-model formulation crystallized the idea that a learned latent model can act as a simulator for downstream control. The model factorizes perception, memory, and action into a VAE, an MDN-RNN, and a controller, compressing observations into latent vectors and predicting future latent dynamics rather than rolling pixels forward directly \cite{ha2018_world_models_prov}. In this view, the world model is not merely a video predictor with a smaller output space. It is a representation of the environment that can be queried by a policy, optimized inside, or used as a surrogate environment for behavior search.
@@ -13,7 +37,14 @@ Token-based interactive world models extend this latent-simulator idea by replac
 
 \subsection{RSSM Dynamics and Online Planning}
 
-PlaNet made the latent-control formulation more systematic by planning directly in a recurrent state-space model. Its RSSM combines deterministic memory with stochastic latent variables, learns observation and reward models, and performs online model-predictive control by searching candidate action sequences in latent space \cite{hafner2019_planet_prov}. This design separates the role of image generation from the role of decision making: decoded images may be useful for training or diagnostics, but planning itself uses latent states and predicted rewards. In the taxonomy of this survey, PlaNet therefore marks a clear move from image-space prediction toward compact state dynamics for action selection.
+PlaNet made the latent-control formulation more systematic by planning directly in a recurrent state-space model. Its RSSM combines deterministic memory with stochastic latent variables, learns observation and reward models, and performs online model-predictive control by searching candidate action sequences in latent space \cite{hafner2019_planet_prov}. Figure~\ref{fig:planet-rssm} illustrates the RSSM design used for compact latent planning. This design separates the role of image generation from the role of decision making: decoded images may be useful for training or diagnostics, but planning itself uses latent states and predicted rewards. In the taxonomy of this survey, PlaNet therefore marks a clear move from image-space prediction toward compact state dynamics for action selection.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.88\linewidth]{../figures/planet_rssm.png}
+    \caption{Recurrent state-space modeling for latent planning. PlaNet compares deterministic recurrent dynamics, stochastic state-space dynamics, and a recurrent state-space model that combines deterministic memory with stochastic latent variables. The RSSM design enables planning over compact latent states rather than over full image rollouts. Reproduced/adapted from Hafner et al.~\cite{hafner2019_planet_prov}.}
+    \label{fig:planet-rssm}
+\end{figure}
 
 RSSM-style models also illustrate why the internal structure of the latent state matters. PlaNet's deterministic and stochastic components are important for performance, suggesting that latent world models need both memory for partial observability and uncertainty-aware state variables for prediction \cite{hafner2019_planet_prov}. This is not the same as the stochastic video-prediction problem in Section~\ref{sec:video_prediction}: here, uncertainty is embedded in a control-oriented state that is trained with observation and reward objectives. The relevant question becomes whether the latent state preserves the information needed for planning, not whether every generated frame is visually sharp.
 

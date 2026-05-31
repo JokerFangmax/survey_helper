@@ -11,18 +11,36 @@ The distinction between a generative video model and a world model is central to
 
 \subsection{Conditional and Causal Diffusion Dynamics}
 
-DIAMOND provides the strongest supported example here for diffusion as a world-modeling mechanism. Rather than treating diffusion only as an unconditional or text-conditioned video generator, DIAMOND models environment dynamics directly in image space, generating the next observation from a history of observations and actions \cite{alonso2024_diamond_prov}. Rollout is autoregressive: generated observations become part of the future context, and the learned simulator is used as the environment in which a reinforcement-learning agent is trained. This makes the diffusion model a transition model over visual observations, not only a video synthesis model.
+\paragraph{DIAMOND as an image-space transition model.}
+DIAMOND provides the strongest supported example here for diffusion as a world-modeling mechanism. Rather than treating diffusion only as an unconditional or text-conditioned video generator, DIAMOND models environment dynamics directly in image space, generating the next observation from a history of observations and actions \cite{alonso2024_diamond_prov}. Rollout is autoregressive: generated observations become part of the future context, and the learned simulator is used as the environment in which a reinforcement-learning agent is trained. Figure~\ref{fig:diamond-diffusion} illustrates this diffusion transition-model framing. This makes the diffusion model a transition model over visual observations, not only a video synthesis model.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.88\linewidth]{../figures/diamond_diffusion_world_model.png}
+    \caption{Diffusion as an image-space world model. DIAMOND conditions a diffusion model on observation-action history to generate the next visual observation, turning diffusion from a generic video-generation mechanism into an autoregressive environment transition model. The comparison with standard video diffusion highlights the difference between predictive world modeling and unconditional or full-sequence video synthesis. Reproduced/adapted from Alonso et al.~\cite{alonso2024_diamond_prov}.}
+    \label{fig:diamond-diffusion}
+\end{figure}
 
 This design changes the abstraction-fidelity trade-off established by latent world models. PlaNet and Dreamer demonstrate that compact recurrent latent states can support planning and imagined policy learning efficiently \cite{hafner2019_planet_prov,hafner2020_dreamer_prov}. DIAMOND instead argues that preserving image-space visual details can improve downstream reinforcement learning performance in Atari, suggesting that some information discarded by compact or discrete latent representations may be control-critical \cite{alonso2024_diamond_prov}. The claim should remain narrow: the cited evidence is Atari-centered, and it supports the importance of visual detail for some control settings rather than a general rule that image-space diffusion is always preferable.
 
+\paragraph{Diffusion Forcing as causal diffusion.}
 Diffusion Forcing adds a second diffusion design point by connecting next-token prediction with full-sequence diffusion \cite{chen2024diffusion_forcing_prov}. In this survey it is used as evidence that the boundary between autoregressive sequence modeling and diffusion-style denoising is becoming a design axis for world models. The appropriate comparison is architectural: causal diffusion is complementary to DIAMOND-style conditional diffusion, not a replacement for full-sequence diffusion or proof of solved long-horizon physical simulation.
 
 \subsection{Latent Actions and Interactive Control}
 
-Interactive world models extend the diffusion and video-generation discussion from predicting likely futures to producing controllable futures. In action-labeled settings, this idea is visible in Atari video prediction, robot pushing, and DIAMOND: the future observation depends on a known intervention signal \cite{oh2015_action_conditional_video_prediction_prov,finn2016_physical_interaction_video_prediction_prov,alonso2024_diamond_prov}. Genie broadens the setting by learning controllability from unlabeled video through a spatiotemporal tokenizer, a latent action model, and a MaskGIT-style dynamics model \cite{bruce2024_genie_prov}. Instead of assuming ground-truth actions, it infers discrete latent actions that can be supplied at inference time to steer generated video.
+\paragraph{Genie as latent actions from unlabeled video.}
+Interactive world models extend the diffusion and video-generation discussion from predicting likely futures to producing controllable futures. In action-labeled settings, this idea is visible in Atari video prediction, robot pushing, and DIAMOND: the future observation depends on a known intervention signal \cite{oh2015_action_conditional_video_prediction_prov,finn2016_physical_interaction_video_prediction_prov,alonso2024_diamond_prov}. Genie broadens the setting by learning controllability from unlabeled video through a spatiotemporal tokenizer, a latent action model, and a MaskGIT-style dynamics model \cite{bruce2024_genie_prov}. Figure~\ref{fig:genie-architecture} shows this video-only latent-action architecture. Instead of assuming ground-truth actions, it infers discrete latent actions that can be supplied at inference time to steer generated video.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.88\linewidth]{../figures/genie_architecture.png}
+    \caption{Learning interactive latent actions from unlabeled video. Genie tokenizes video frames, infers discrete latent actions between frames, and trains a dynamics model to predict future video tokens under those latent controls. This architecture shows how controllable interactive environments can be learned from video-only data without ground-truth action labels. Reproduced/adapted from Bruce et al.~\cite{bruce2024_genie_prov}.}
+    \label{fig:genie-architecture}
+\end{figure}
 
 Genie's contribution is conceptually important because it separates interaction from externally labeled control. Genie is trained from video-only data without ground-truth action labels, and its learned latent actions can support downstream imitation in a narrow CoinRun setting \cite{bruce2024_genie_prov}. At the same time, latent actions are not equivalent to physically grounded interventions. They may make a generated environment playable or steerable, but their semantics require post hoc interpretation, and the available evidence does not establish robust long-horizon physical consistency. Thus, Genie is best read as evidence that controllability can emerge from video-only learning, not as proof that unlabeled video alone yields physically reliable world simulators.
 
+\paragraph{LAPA as embodied latent-action pretraining.}
 LAPA extends the latent-action theme into the vision-language-action setting and is used here as a reference point for latent actions, video pretraining, and embodied control \cite{ye2025lapa_prov}. The survey treats it as a design question rather than a settled empirical conclusion: latent action pretraining may reduce reliance on direct action annotation, but it does not eliminate the need to connect learned latent actions to robot actions or embodied policy learning. iVideoGPT is similarly useful as a token-based interactive world-model bridge between VideoGPT-style generation and controllable sequence modeling \cite{wu2024ivideogpt}.
 
 \subsection{Large-Scale World Foundation Model Efforts}

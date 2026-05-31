@@ -3,6 +3,22 @@
 
 Evaluation is the point at which video prediction, generative simulation, and world modeling must be separated. A video model can reconstruct frames, produce visually plausible samples, obtain high task return, or satisfy a prompt without necessarily learning a physically valid, controllable, or causally useful model of the world. The preceding sections therefore motivate a multi-axis evaluation view: reconstruction fidelity tests local visual prediction, generative video metrics test distributional visual quality, planning or control returns test task usefulness, physical benchmarks test whether dynamics obey commonsense or physical constraints, causal and counterfactual tasks test reasoning about interventions, and controllability tests whether a model responds reliably to actions or latent controls. No single axis is sufficient for the survey's target notion of a predictive world model.
 
+\begin{figure}[t]
+\centering
+\small
+\begin{tabular}{p{0.23\linewidth} p{0.22\linewidth} p{0.22\linewidth} p{0.23\linewidth}}
+\toprule
+Evaluation axis & Typical question & Representative signals & Example benchmarks or uses \\
+\midrule
+Visual fidelity & Does the video look plausible or match pixels? & Reconstruction error, PSNR/SSIM, FVD & Video prediction metrics; FVD \cite{unterthiner2018_fvd_prov} \\
+Control utility & Does the model support decisions? & Planning success, control return, task success & O2P2 planning; PlaNet/Dreamer returns; DIAMOND control \cite{janner2019_o2p2_prov,hafner2019_planet_prov,hafner2020_dreamer_prov,alonso2024_diamond_prov} \\
+Physical consistency & Are interactions physically plausible? & Human judgment, automatic judgers, measurements & VideoPhy, WorldModelBench, Morpheus, What-If World \cite{bansal2025_videophy_prov,li2025worldmodelbench_prov,zhang2025morpheus_prov,cai2026whatifworld_prov} \\
+\bottomrule
+\end{tabular}
+\caption{Three complementary evaluation axes for video-based world models. A strong result on one axis does not imply validity on the others, so world-model evaluation should report them separately whenever possible.}
+\label{fig:evaluation_axes}
+\end{figure}
+
 \subsection{Visual and Reconstruction Metrics}
 
 Reconstruction metrics remain useful, but they measure only a narrow part of world-model behavior. Early action-conditioned video prediction used pixel error and qualitative rollouts, yet frame prediction quality alone can underestimate usefulness for control \cite{oh2015_action_conditional_video_prediction_prov}. Robot video prediction similarly used PSNR and SSIM to compare future-frame quality, but its own limitations point to blur, short horizons, and the need to evaluate decision usefulness rather than only image similarity \cite{finn2016_physical_interaction_video_prediction_prov}. These examples show why reconstruction fidelity is best treated as a diagnostic for local observation prediction, not as evidence that a model has learned physical dynamics, controllable interventions, or task-relevant state.
@@ -17,7 +33,14 @@ Control utility is still not equivalent to general world validity. Reward-define
 
 \subsection{Human-Judgment Physical Commonsense Evaluation}
 
-Physical consistency evaluation asks whether generated or predicted videos obey the constraints implied by objects, materials, and interactions. VideoPhy evaluates generated videos for both semantic adherence and physical commonsense, organizes prompts around solid-solid, solid-fluid, and fluid-fluid interactions, and reports that the best evaluated text-to-video model satisfies caption and physical-law criteria on only a minority of instances \cite{bansal2025_videophy_prov}. This directly supports the survey's warning that visual realism should not be equated with world-model correctness. The benchmark is also useful conceptually because it treats physical commonsense as a measurable property rather than an informal qualitative impression.
+Physical consistency evaluation asks whether generated or predicted videos obey the constraints implied by objects, materials, and interactions. VideoPhy evaluates generated videos for both semantic adherence and physical commonsense, organizes prompts around solid-solid, solid-fluid, and fluid-fluid interactions, and reports that the best evaluated text-to-video model satisfies caption and physical-law criteria on only a minority of instances \cite{bansal2025_videophy_prov}. Figure~\ref{fig:videophy-examples} illustrates why physical commonsense evaluation is distinct from visual plausibility. This directly supports the survey's warning that visual realism should not be equated with world-model correctness. The benchmark is also useful conceptually because it treats physical commonsense as a measurable property rather than an informal qualitative impression.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.88\linewidth]{../figures/videophy_examples.png}
+    \caption{Physical commonsense violations in generated videos. VideoPhy shows that text-to-video models can produce visually plausible videos while violating intuitive physical laws, such as conservation of mass, Newtonian motion, or material consistency. These examples motivate evaluating video-based world models beyond visual realism and caption adherence. Reproduced/adapted from Bansal et al.~\cite{bansal2025_videophy_prov}.}
+    \label{fig:videophy-examples}
+\end{figure}
 
 VideoPhy-2 is included as a related action-centric physical-commonsense benchmark for video generation \cite{bansal2025videophy2_prov}. Its role here is to mark an expansion from material-interaction prompts toward action execution and action plausibility. This survey does not use VideoPhy-2 to make detailed claims about exact failure rates, evaluated models, or automatic-evaluator performance. The cautious synthesis is that human-judgment physical commonsense evaluation is becoming more fine-grained, while remaining sensitive to prompt design, annotation protocol, and benchmark scope.
 
